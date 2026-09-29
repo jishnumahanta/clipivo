@@ -79,7 +79,7 @@ You copy something useful, then something else, and the first thing is gone. **C
 
 ## Private by default
 
-Your history stays in your Mac's user folder. Clipivo has no account, no server and no analytics, and it never writes clipboard contents to logs. Text in images is recognised on-device with Apple Vision. Clipivo doesn't read the clipboard at all while you copy from an ignored app. Password-manager copies and likely secrets follow the rules you choose. The only optional network feature, fetching titles for copied links, is off by default. See [SECURITY.md](SECURITY.md) for details.
+Your history stays in your Mac's user folder. Clipivo has no account, no server and no analytics, and it never writes clipboard contents to logs. Text in images is recognised on-device with Apple Vision. Clipivo doesn't read the clipboard at all while you copy from an ignored app. Password-manager copies and likely secrets follow the rules you choose. Clipivo's only network requests are a daily check of its GitHub releases for updates (no clipboard data, and you can turn it off) and, if you switch it on, fetching titles for copied links. See [SECURITY.md](SECURITY.md) for details.
 
 ## Install
 

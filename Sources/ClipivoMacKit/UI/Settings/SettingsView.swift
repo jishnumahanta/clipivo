@@ -89,6 +89,26 @@ struct GeneralSettings: View {
                 }
                 .onChange(of: prefs.menuBarClickAction) { _, _ in app.onStateChange?() }
             }
+            Section("Updates") {
+                Toggle(isOn: $prefs.checkForUpdates) {
+                    Text("Check for updates automatically")
+                    Text("Once a day, \(Branding.productName) asks GitHub whether a newer version has been released. No clipboard data or identifiers are sent, and nothing is downloaded without you.")
+                }
+                .onChange(of: prefs.checkForUpdates) { _, on in if on { app.updates.checkIfDue() } }
+                HStack {
+                    if let update = app.updates.available {
+                        Label("Version \(update.version) is available", systemImage: "arrow.down.circle.fill").foregroundStyle(.tint)
+                        Spacer()
+                        Button("Download…") { app.updates.openReleasePage() }
+                    } else {
+                        Text(Self.lastCheckDescription(prefs.lastUpdateCheck)).foregroundStyle(.secondary)
+                        Spacer()
+                        Button(app.updates.isChecking ? "Checking…" : "Check Now") { app.updates.checkInteractively() }
+                            .disabled(app.updates.isChecking)
+                    }
+                }
+                .font(.callout)
+            }
             Section("Permissions") {
                 LabeledContent {
                     if axGranted {
@@ -121,6 +141,11 @@ struct GeneralSettings: View {
             }
         }
         .onReceive(timer) { _ in axGranted = AccessibilityPermission.isGranted }
+    }
+
+    static func lastCheckDescription(_ date: Date?) -> String {
+        guard let date else { return "Not checked yet" }
+        return "Last checked " + date.formatted(.relative(presentation: .named))
     }
 
     static var versionString: String {

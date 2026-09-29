@@ -32,7 +32,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
         guard let button = statusItem.button else { return }
         let paused = app.preferences.monitoringPaused
         let color = app.preferences.colorMenuBarIcon
-        let image = StatusIcon.image(paused ? .paused : (app.pendingCaptures.isEmpty ? .normal : .attention),
+        let image = StatusIcon.image(paused ? .paused : (app.pendingCaptures.isEmpty && app.updates.available == nil ? .normal : .attention),
                                      style: color ? .color : .monochrome)
         image.accessibilityDescription = paused ? "\(Branding.productName) (paused)" : Branding.productName
         button.image = image
@@ -103,6 +103,11 @@ final class StatusItemController: NSObject, NSMenuDelegate {
         menu.addItem(spaces)
 
         menu.addItem(.separator())
+        if let update = app.updates.available {
+            let available = item("Update Available: \(Branding.productName) \(update.version)…", #selector(openUpdate))
+            available.image = NSImage(systemSymbolName: "arrow.down.circle", accessibilityDescription: nil)
+            menu.addItem(available)
+        }
         if !app.pendingCaptures.isEmpty {
             let pending = item("\(app.pendingCaptures.count) sensitive item\(app.pendingCaptures.count == 1 ? "" : "s") awaiting review…", #selector(openSearch))
             pending.image = NSImage(systemSymbolName: "exclamationmark.shield", accessibilityDescription: nil)
@@ -113,6 +118,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
         menu.addItem(.separator())
         menu.addItem(item("Open Clipboard", #selector(openHistory)))
         menu.addItem(item("Settings…", #selector(settings), key: ","))
+        menu.addItem(item("Check for Updates…", #selector(checkForUpdates)))
         menu.addItem(item("About \(Branding.productName)", #selector(about)))
         menu.addItem(.separator())
         menu.addItem(item("Quit \(Branding.productName)", #selector(quit), key: "q"))
@@ -125,6 +131,8 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     }
 
     @objc private func openSearch() { showPanel?(nil) }
+    @objc private func openUpdate() { app.updates.openReleasePage() }
+    @objc private func checkForUpdates() { app.updates.checkInteractively() }
     @objc private func openHistory() { showPanel?(.history) }
     @objc private func openPinned() { showPanel?(.pinned) }
     @objc private func openSpace(_ sender: NSMenuItem) { showPanel?(.space(Int64(sender.tag))) }

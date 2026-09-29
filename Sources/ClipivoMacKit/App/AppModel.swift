@@ -18,6 +18,7 @@ public final class AppModel {
     public let preferences: Preferences
     public let library: ClipLibrary
     public let lock: LockService
+    public let updates: UpdateService
     @ObservationIgnored let processor: CaptureProcessor
     @ObservationIgnored let background: BackgroundProcessor
     @ObservationIgnored let monitor: ClipboardMonitor
@@ -55,6 +56,7 @@ public final class AppModel {
         background = BackgroundProcessor(library: library, recognizer: VisionTextRecognizer(), renderer: ImageIOThumbnailRenderer())
         monitor = ClipboardMonitor()
         lock = LockService(preferences: preferences)
+        updates = UpdateService(preferences: preferences)
     }
 
     // MARK: - Lifecycle
@@ -82,8 +84,17 @@ public final class AppModel {
         if library.recoveredFromCorruption {
             show("The clipboard database was damaged and has been set aside. A new history was started.", style: .warning)
         }
+        updates.onChange = { [weak self] in self?.onStateChange?() }
+        // First update check shortly after launch (so it never delays startup), then at most daily.
+        Task { [weak self] in
+            try? await Task.sleep(for: .seconds(20))
+            self?.updates.checkIfDue()
+        }
         maintenanceTimer = Timer.scheduledTimer(withTimeInterval: 6 * 3600, repeats: true) { [weak self] _ in
-            MainActor.assumeIsolated { self?.runMaintenance() }
+            MainActor.assumeIsolated {
+                self?.runMaintenance()
+                self?.updates.checkIfDue()
+            }
         }
     }
 

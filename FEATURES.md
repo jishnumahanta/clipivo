@@ -53,6 +53,7 @@
 - ✅ Storage statistics, thumbnail cache clearing, compaction, index rebuild
 - ✅ Export/import `.clipivo` archives (dedupe-safe), automatic local backups
 - ✅ Launch at login, welcome/onboarding window
+- ✅ Update checks: daily GitHub release check (on by default, toggle in Settings ▸ General), "Check for Updates…" menu item, "Update Available" in the menu bar menu
 - 🟡 In-panel shortcuts are documented but fixed (only global shortcuts are rebindable)
 - ⏳ Drag clips out to other apps; drag clips onto Spaces
 - ⏳ URL favicons

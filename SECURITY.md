@@ -2,7 +2,7 @@
 
 Clipboard data is some of the most sensitive data on a computer. Clipivo's rules:
 
-1. **Local only.** No account, no server, no telemetry, no third-party analytics. The only optional network access is "Fetch page titles for copied links" (off by default), which requests the copied URL itself.
+1. **Local only.** No account, no server, no telemetry, no third-party analytics. Clipboard data never leaves the Mac. Two features use the network: **update checks** (on by default, Settings ▸ General) request `api.github.com/repos/jishnumahanta/clipivo/releases` at most once a day, without cookies, credentials or identifiers, never download or install anything, and only open pages under the official releases URL; and **"Fetch page titles for copied links"** (off by default) requests the copied URL itself.
 2. **No content in logs.** Clipivo never logs clipboard contents; error messages describe storage state only.
 3. **Owner-only files.** The library directory is `0700`; the database, its WAL/SHM files, blobs and private payloads are `0600`.
 4. **Exclusions happen before reading.** When the frontmost (or `org.nspasteboard.source`-declared) app is ignored, or monitoring is paused, the pasteboard contents are not read at all — no storage, thumbnails, OCR or network.

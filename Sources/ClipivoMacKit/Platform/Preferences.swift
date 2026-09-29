@@ -111,6 +111,9 @@ public final class Preferences {
     public var searchAppNames: Bool { didSet { save("searchAppNames", searchAppNames) } }
     public var ocrEnabled: Bool { didSet { save("ocrEnabled", ocrEnabled) } }
     public var fetchLinkTitles: Bool { didSet { save("fetchLinkTitles", fetchLinkTitles) } }
+    /// Daily check of Clipivo's GitHub releases for a newer version (see `UpdateService`).
+    public var checkForUpdates: Bool { didSet { save("checkForUpdates", checkForUpdates) } }
+    public var lastUpdateCheck: Date? { didSet { save("lastUpdateCheck", lastUpdateCheck) } }
 
     // Appearance
     public var appearance: AppearanceMode { didSet { save("appearance", appearance.rawValue) } }
@@ -183,6 +186,8 @@ public final class Preferences {
         searchAppNames = bool("searchAppNames", true)
         ocrEnabled = bool("ocrEnabled", true)
         fetchLinkTitles = bool("fetchLinkTitles", false)
+        checkForUpdates = bool("checkForUpdates", true)
+        lastUpdateCheck = defaults.object(forKey: "lastUpdateCheck") as? Date
 
         appearance = enumValue("appearance", AppearanceMode.system)
         density = enumValue("density", ListDensity.comfortable)
