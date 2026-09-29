@@ -117,8 +117,9 @@ public final class ImageCache {
     }
 }
 
-/// Decodes an image off the main thread. `NSImage` isn't `Sendable` in older macOS SDKs, so the result
-/// is boxed for the hop back; it's only read on the caller's actor after decoding finishes.
+/// Decodes an image off the main thread and returns it on the main actor. `NSImage` isn't `Sendable`
+/// in older macOS SDKs, so the result is boxed for the hop back; it's only read here once decoded.
+@MainActor
 func loadImageOffMain(_ load: @escaping @Sendable () -> NSImage?) async -> NSImage? {
     await Task.detached(priority: .userInitiated) { DecodedImage(image: load()) }.value.image
 }
