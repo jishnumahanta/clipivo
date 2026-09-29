@@ -29,7 +29,7 @@
 - ✅ Multi-select (⌘-click, ⇧-arrows) bulk actions
 
 ## Paste
-- ✅ Click / Return / ⌘1–9 paste into the previously active app; plain-text and copy-only variants
+- ✅ Double-click / Return / ⌘1–9 paste into the previously active app (click selects; single-click paste is an option); plain-text and copy-only variants
 - ✅ Paste behaviour preference (paste / copy only / ask); "always plain text"
 - ✅ Used clips move to the top (clipboard + history)
 - ✅ Accessibility missing → clip copied and explained, never silent
@@ -53,7 +53,7 @@
 - ✅ Storage statistics, thumbnail cache clearing, compaction, index rebuild
 - ✅ Export/import `.clipivo` archives (dedupe-safe), automatic local backups
 - ✅ Launch at login, welcome/onboarding window
-- ✅ Update checks: "Check Now" / "Check for Updates…", plus an optional daily check (off by default, Settings ▸ General), "Check for Updates…" menu item, "Update Available" in the menu bar menu
+- ✅ Update checks: "Check Now" in Settings ▸ General and "Check for Updates…" in the menu, plus an optional daily check (off by default) that shows "Update Available" in the menu bar menu
 - 🟡 In-panel shortcuts are documented but fixed (only global shortcuts are rebindable)
 - ⏳ Drag clips out to other apps; drag clips onto Spaces
 - ⏳ URL favicons
@@ -64,9 +64,10 @@
 |---|---|
 | ⇧⌘V | Open or close Clipivo (configurable) |
 | ← → ↑ ↓ | Move the selection (⇧ extends it) |
-| Return · click · ⌘1–⌘9 | Paste |
-| ⇧Return · ⇧-click | Paste as plain text |
-| ⌥Return · ⌥-click · ⌘C | Copy without pasting |
+| Click | Select |
+| Return · double-click · ⌘1–⌘9 | Paste (Settings › Clipboard can make a single click paste) |
+| ⇧Return · ⇧-double-click | Paste as plain text |
+| ⌥Return · ⌥-double-click · ⌘C | Copy without pasting |
 | Space · ⌘Y | Quick Look |
 | ⌘P · ⌘R · ⌘T | Pin · rename · tag |
 | ⌘N | New Space from the selection |

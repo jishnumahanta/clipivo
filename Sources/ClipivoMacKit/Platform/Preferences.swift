@@ -163,7 +163,7 @@ public final class Preferences {
         pasteBehavior = enumValue("pasteBehavior", PasteBehavior.paste)
         alwaysPastePlainText = bool("alwaysPastePlainText", false)
         closeAfterCopy = bool("closeAfterCopy", true)
-        singleClickPastes = bool("singleClickPastes", true)
+        singleClickPastes = bool("singleClickPastes", false) // click selects, double-click pastes
         moveUsedToTop = bool("moveUsedToTop", true)
         pollInterval = defaults.object(forKey: "pollInterval") as? Double ?? 0.3
         maxItemSizeMB = int("maxItemSizeMB", 200)

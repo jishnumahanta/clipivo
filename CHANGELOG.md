@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.3 Beta — 2026-09-29
+
+- Click selects a clip, and double-click pastes it into the app you were using (it also becomes your latest clipboard item). Single-click paste is still available in Settings › Clipboard.
+- With single-click paste on, a double-click no longer loses the paste: Clipivo swallows the stray second click so it can't move focus out of the text field.
+
 ## 0.9.2 Beta — 2026-09-29
 
 - Fixed: double-clicking a clip (especially an image) copied it but didn't paste. With single-click paste on, the second click of a double-click is now ignored, and only one paste runs at a time.

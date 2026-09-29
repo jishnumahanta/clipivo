@@ -223,6 +223,27 @@ public final class PanelViewModel {
 
     // MARK: - Actions
 
+    /// A mouse click on a clip (card or row). By default one click selects and a double-click pastes
+    /// (⇧ plain text, ⌥ copy only). With "Single-click a clip to paste it" on, the first click pastes and
+    /// the second click of a double-click is ignored — and swallowed if it lands in the app underneath,
+    /// where it would move focus out of the text field before ⌘V arrives.
+    func handleClick(_ id: Int64) {
+        let clicks = NSApp.currentEvent?.clickCount ?? 1
+        let plainText = NSEvent.modifierFlags.contains(.shift)
+        let copyOnly = NSEvent.modifierFlags.contains(.option)
+        if app.preferences.singleClickPastes {
+            guard clicks == 1 else { return }
+            multiSelection.removeAll()
+            selectedID = id
+            if !copyOnly { DoubleClickGuard.swallowFollowUpClick() }
+            activate(id, plainText: plainText, forceCopy: copyOnly)
+        } else {
+            multiSelection.removeAll()
+            selectedID = id
+            if clicks == 2 { activate(id, plainText: plainText, forceCopy: copyOnly) }
+        }
+    }
+
     func activate(_ id: Int64?, plainText: Bool = false, forceCopy: Bool = false) {
         guard let id else { return }
         if app.lock.isLocked { return }

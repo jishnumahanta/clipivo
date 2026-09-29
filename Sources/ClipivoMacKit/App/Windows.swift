@@ -61,7 +61,7 @@ struct WelcomeView: View {
                 }
             }
             step(1, "Copy as usual", "Everything you copy — text, images, links, files — is kept on this Mac, forever by default.")
-            step(2, "Press \(app.preferences.panelHotKey?.displayString ?? "your shortcut") anywhere", "Search your history, then press Return to paste into the app you were using.")
+            step(2, "Press \(app.preferences.panelHotKey?.displayString ?? "your shortcut") anywhere", "Search your history, then double-click a clip or press Return to paste it into the app you were using.")
             VStack(alignment: .leading, spacing: 6) {
                 step(3, "Allow automatic paste", "macOS asks for Accessibility access so \(Branding.productName) can send ⌘V for you. Without it, clips are copied and you press ⌘V yourself.")
                 HStack {

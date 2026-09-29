@@ -142,14 +142,7 @@ struct ShelfView: View {
 
     private func handleClick(_ clip: ClipSummary) {
         if NSEvent.modifierFlags.contains(.command) { model.toggleMultiSelection(clip.id); return }
-        // With single-click paste, the first click of a double-click has already started pasting;
-        // acting on the second click too would start a second paste that swallows the first ⌘V.
-        if app.preferences.singleClickPastes, (NSApp.currentEvent?.clickCount ?? 1) > 1 { return }
-        model.multiSelection.removeAll()
-        model.selectedID = clip.id
-        if app.preferences.singleClickPastes {
-            model.activate(clip.id, plainText: NSEvent.modifierFlags.contains(.shift), forceCopy: NSEvent.modifierFlags.contains(.option))
-        }
+        model.handleClick(clip.id)
     }
 
     @ViewBuilder private var toast: some View {

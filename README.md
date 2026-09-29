@@ -35,7 +35,7 @@ You copy something useful, then something else, and the first thing is gone. **C
 
 - **Keeps everything.** Text, rich text, links, images, screenshots, PDFs, files, colors and code. There's no item limit and no automatic expiry.
 - **Finds it instantly.** Search content, titles, file names, source apps, and even the text inside screenshots.
-- **Pastes where you are.** One click pastes into the app you were using. You can also paste as plain text or just copy.
+- **Pastes where you are.** Double-click a clip (or press Return) to paste it into the app you were using. You can also paste as plain text or just copy.
 - **Stays organized.** Spaces, pins, titles and tags.
 - **Stays private.** Everything is stored on your Mac. Clipivo skips the apps you ignore, and it can encrypt sensitive clips behind Touch ID.
 
@@ -89,7 +89,7 @@ Your history stays in your Mac's user folder. Clipivo has no account, no server 
 
 Requires macOS 14 or later (Apple Silicon or Intel). A `.zip` is also available. [INSTALL.md](INSTALL.md) covers updating and uninstalling.
 
-| ⇧⌘V | Return / click | ⇧Return | ⌥Return | Space |
+| ⇧⌘V | Return / double-click | ⇧Return | ⌥Return | Space |
 |:---:|:---:|:---:|:---:|:---:|
 | Open Clipivo | Paste | Paste as plain text | Copy only | Quick Look |
 

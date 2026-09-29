@@ -299,17 +299,8 @@ struct ClipListView: View {
                                     showSourceIcon: showIcons, spaces: spaces,
                                     thumbnailURL: clip.thumbnailKey.map { library.thumbnailURL(for: $0) })
                             .id(clip.id)
-                            .gesture(TapGesture(count: 2).onEnded { model.selectedID = clip.id; model.activate(clip.id) },
-                                     including: app.preferences.singleClickPastes ? .none : .all)
-                            .simultaneousGesture(TapGesture().modifiers(.command).onEnded { model.toggleMultiSelection(clip.id) })
                             .onTapGesture {
-                                // Second click of a double-click: the first already started the paste.
-                                if app.preferences.singleClickPastes, (NSApp.currentEvent?.clickCount ?? 1) > 1 { return }
-                                model.multiSelection.removeAll()
-                                model.selectedID = clip.id
-                                if app.preferences.singleClickPastes {
-                                    model.activate(clip.id, plainText: NSEvent.modifierFlags.contains(.shift), forceCopy: NSEvent.modifierFlags.contains(.option))
-                                }
+                                if NSEvent.modifierFlags.contains(.command) { model.toggleMultiSelection(clip.id) } else { model.handleClick(clip.id) }
                             }
                             .contextMenu { ClipContextMenu(clip: clip, model: model, app: app) }
                             .onAppear { model.loadMoreIfNeeded(currentID: clip.id) }
