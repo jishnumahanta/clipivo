@@ -41,6 +41,7 @@ public final class AppModel {
     @ObservationIgnored private var refreshScheduled = false
     @ObservationIgnored private var noticeTask: Task<Void, Never>?
     @ObservationIgnored private var maintenanceTimer: Timer?
+    @ObservationIgnored private var deliveryInProgress = false
     @ObservationIgnored var onPanelRequest: ((PanelRequest) -> Void)?
     @ObservationIgnored var onStateChange: (() -> Void)?
 
@@ -212,6 +213,16 @@ public final class AppModel {
 
     /// Places a clip on the pasteboard and, for `.paste`, sends ⌘V to the previously active app.
     public func deliver(_ clipID: Int64, as delivery: Delivery, plainText: Bool) async {
+        // One delivery at a time: a second request (a repeated click or key press while a large image
+        // is still loading) would rewrite the clipboard and send a second ⌘V mid-paste.
+        guard !deliveryInProgress else { return }
+        deliveryInProgress = true
+        defer {
+            Task { @MainActor [weak self] in
+                try? await Task.sleep(for: .milliseconds(350))
+                self?.deliveryInProgress = false
+            }
+        }
         let plain = plainText || (preferences.alwaysPastePlainText && delivery == .paste)
         guard let summary = try? await library.summary(id: clipID) else {
             show("That clip no longer exists.", style: .error)

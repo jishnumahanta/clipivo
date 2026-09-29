@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.2 Beta — 2026-09-29
+
+- Fixed: double-clicking a clip (especially an image) copied it but didn't paste. With single-click paste on, the second click of a double-click is now ignored, and only one paste runs at a time.
+
 ## 0.9.1 Beta — 2026-09-29
 
 - Update checks: "Check for Updates…" in the menu bar menu and **Check Now** in Settings ▸ General. An optional daily check (off by default) shows "Update Available" in the menu when a new version is out.

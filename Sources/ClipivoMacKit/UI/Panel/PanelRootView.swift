@@ -303,6 +303,8 @@ struct ClipListView: View {
                                      including: app.preferences.singleClickPastes ? .none : .all)
                             .simultaneousGesture(TapGesture().modifiers(.command).onEnded { model.toggleMultiSelection(clip.id) })
                             .onTapGesture {
+                                // Second click of a double-click: the first already started the paste.
+                                if app.preferences.singleClickPastes, (NSApp.currentEvent?.clickCount ?? 1) > 1 { return }
                                 model.multiSelection.removeAll()
                                 model.selectedID = clip.id
                                 if app.preferences.singleClickPastes {
