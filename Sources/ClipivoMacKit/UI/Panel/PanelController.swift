@@ -166,22 +166,9 @@ final class PanelController: NSObject, NSWindowDelegate {
         panel.setFrame(NSRect(origin: origin, size: size), display: false)
     }
 
-    /// Development aid: renders the panel's own content to a PNG (no screen-recording permission needed).
+    /// Demo mode: renders the panel's own content to a PNG (no screen-recording permission needed).
     func writeSnapshot(to url: URL) {
-        guard let view = panel.contentView else { return }
-        let bounds = view.bounds
-        guard let rep = view.bitmapImageRepForCachingDisplay(in: bounds) else { return }
-        view.cacheDisplay(in: bounds, to: rep)
-        let background = NSImage(size: bounds.size, flipped: false) { rect in
-            (NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? NSColor(white: 0.16, alpha: 1) : NSColor(white: 0.95, alpha: 1)).setFill()
-            rect.fill()
-            rep.draw(in: rect)
-            return true
-        }
-        if let tiff = background.tiffRepresentation, let bitmap = NSBitmapImageRep(data: tiff),
-           let png = bitmap.representation(using: .png, properties: [:]) {
-            try? png.write(to: url)
-        }
+        panel.contentView?.writePNGSnapshot(to: url)
     }
 
     private func shelfFrame(on visible: NSRect, expanded: Bool) -> NSRect {

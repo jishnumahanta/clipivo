@@ -1,8 +1,49 @@
+# macOS
 .DS_Store
+._*
+
+# Swift Package Manager / Xcode build output
 .build/
 .swiftpm/
 build/
-dist/
 DerivedData/
 *.xcuserstate
 xcuserdata/
+*.xcuserdatad/
+
+# App bundles, release zips and local screenshots (built by scripts/)
+dist/
+*.dmg
+
+# Clipboard libraries and databases — never commit real clipboard data
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.db
+*.clipivo
+Backups/
+
+# Signing material and secrets
+*.p12
+*.cer
+*.certSigningRequest
+*.mobileprovision
+*.provisionprofile
+*.keychain
+*.keychain-db
+.env
+.env.*
+notarytool-*.json
+AuthKey_*.p8
+
+# Editors and temporary files
+*.swp
+*~
+.vscode/
+.idea/
+*.tmp
+*.log
+
+# AI tooling notes (local only)
+CLAUDE.md
+AGENTS.md

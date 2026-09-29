@@ -45,12 +45,17 @@ public final class AppModel {
 
     public enum PanelRequest { case toggle, show, hide, showSpace(Int64?), showPinned }
 
-    public init(preferences: Preferences? = nil, layout: StorageLayout = .standard()) throws {
+    /// Demo mode (see `DemoMode`): shows a sample library without monitoring the clipboard or
+    /// registering global shortcuts.
+    let isDemo: Bool
+
+    init(preferences: Preferences? = nil, layout: StorageLayout = .standard(), cipher: ContentCipher? = nil, demo: Bool = false) throws {
+        isDemo = demo
         let preferences = preferences ?? Preferences.shared
         self.preferences = preferences
         // The Keychain is only touched when a private clip is first created or opened.
         privateStorageAvailable = true
-        library = try ClipLibrary(layout: layout, cipher: KeychainBackedCipher())
+        library = try ClipLibrary(layout: layout, cipher: cipher ?? KeychainBackedCipher())
         processor = CaptureProcessor(library: library)
         background = BackgroundProcessor(library: library, recognizer: VisionTextRecognizer(), renderer: ImageIOThumbnailRenderer())
         monitor = ClipboardMonitor()
@@ -71,13 +76,13 @@ public final class AppModel {
             _ = try? await library.reclassifyIfNeeded()
             await refreshCaches()
             applyCapturePolicy()
-            monitor.start(interval: preferences.pollInterval)
+            if !isDemo { monitor.start(interval: preferences.pollInterval) }
             await background.setOCREnabled(preferences.ocrEnabled)
             await background.refreshThumbnailsIfSizeChanged()
             background.schedule()
             runMaintenance()
         }
-        registerHotKeys()
+        if !isDemo { registerHotKeys() }
         applyAppearance()
         if library.recoveredFromCorruption {
             show("The clipboard database was damaged and has been set aside. A new history was started.", style: .warning)

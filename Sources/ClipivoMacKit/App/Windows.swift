@@ -18,6 +18,9 @@ final class HostedWindowController<Content: View>: NSObject, NSWindowDelegate {
         self.content = content
     }
 
+    /// The window's content, once shown (used by demo-mode snapshots).
+    var contentView: NSView? { window?.contentView }
+
     func show() {
         if window == nil {
             var style: NSWindow.StyleMask = [.titled, .closable, .miniaturizable, .fullSizeContentView]
