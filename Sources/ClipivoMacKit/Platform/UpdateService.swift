@@ -2,8 +2,8 @@ import AppKit
 import Observation
 import ClipivoCore
 
-/// Checks Clipivo's GitHub releases for a newer version: automatically at most once a day (when
-/// Settings ▸ General ▸ "Check for updates automatically" is on) or when the user asks.
+/// Checks Clipivo's GitHub releases for a newer version when the user asks, and automatically at most
+/// once a day if Settings ▸ General ▸ "Check for updates automatically" is on (off by default).
 ///
 /// Safety: it makes one unauthenticated HTTPS request for public release metadata (no clipboard
 /// data, identifiers or cookies), never downloads or installs anything, and only ever opens a page

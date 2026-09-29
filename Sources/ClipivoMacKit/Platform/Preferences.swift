@@ -186,7 +186,7 @@ public final class Preferences {
         searchAppNames = bool("searchAppNames", true)
         ocrEnabled = bool("ocrEnabled", true)
         fetchLinkTitles = bool("fetchLinkTitles", false)
-        checkForUpdates = bool("checkForUpdates", true)
+        checkForUpdates = bool("checkForUpdates", false)
         lastUpdateCheck = defaults.object(forKey: "lastUpdateCheck") as? Date
 
         appearance = enumValue("appearance", AppearanceMode.system)

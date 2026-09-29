@@ -1,8 +1,8 @@
 # Changelog
 
-## 0.9.1 Beta — unreleased
+## 0.9.1 Beta — 2026-09-29
 
-- Update checks: Clipivo checks GitHub once a day for a newer version and shows "Update Available" in the menu bar menu. Turn it off in Settings ▸ General. Also adds "Check for Updates…" to the menu.
+- Update checks: "Check for Updates…" in the menu bar menu and **Check Now** in Settings ▸ General. An optional daily check (off by default) shows "Update Available" in the menu when a new version is out.
 - Release disk image opens without a Gatekeeper warning (only the app needs "Open Anyway")
 - Fixed build warnings on older Xcode versions
 

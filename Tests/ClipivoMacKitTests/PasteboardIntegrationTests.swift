@@ -192,6 +192,8 @@ struct PasteboardIntegrationTests {
         #expect(prefs.panelHotKey == KeyCombo.defaultPanel)
         #expect(prefs.sensitivePolicy == .ask)
         #expect(prefs.cleanupEnabled == false) // history is kept forever by default
+        #expect(prefs.checkForUpdates == false) // no network requests by default
+        #expect(prefs.fetchLinkTitles == false)
         prefs.searchOCR = false
         prefs.panelHotKey = nil
         let reloaded = Preferences(defaults: defaults)
