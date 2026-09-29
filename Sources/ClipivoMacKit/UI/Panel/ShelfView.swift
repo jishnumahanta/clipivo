@@ -355,7 +355,7 @@ private struct CardThumbnail: View {
         .task(id: url) {
             guard ImageCache.shared.cachedThumbnail(at: url) == nil else { return }
             let path = url
-            if let loaded = await Task.detached(priority: .userInitiated, operation: { NSImage(contentsOf: path) }).value {
+            if let loaded = await loadImageOffMain({ NSImage(contentsOf: path) }) {
                 ImageCache.shared.store(loaded, for: url)
                 image = loaded
             }

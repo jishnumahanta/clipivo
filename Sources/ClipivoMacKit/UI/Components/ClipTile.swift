@@ -68,7 +68,7 @@ struct ThumbnailImage: View {
         .task(id: url) {
             guard ImageCache.shared.cachedThumbnail(at: url) == nil else { return }
             let path = url
-            let loaded = await Task.detached(priority: .userInitiated) { NSImage(contentsOf: path) }.value
+            let loaded = await loadImageOffMain { NSImage(contentsOf: path) }
             if let loaded {
                 ImageCache.shared.store(loaded, for: url)
                 image = loaded

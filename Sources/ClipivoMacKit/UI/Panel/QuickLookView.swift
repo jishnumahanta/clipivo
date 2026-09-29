@@ -208,7 +208,7 @@ private struct ImagePreview: View {
         .task(id: content.summary.id) {
             let data = RepresentationType.imageTypes.lazy.compactMap { content.data(for: $0) }.first
             guard let data else { return }
-            image = await Task.detached(priority: .userInitiated) { NSImage(data: data) }.value
+            image = await loadImageOffMain { NSImage(data: data) }
         }
     }
 }
