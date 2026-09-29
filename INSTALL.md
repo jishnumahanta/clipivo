@@ -4,8 +4,8 @@ Clipivo is in free public beta. The beta isn't notarized by Apple yet, so macOS 
 
 ## 1. Install
 
-1. Download `Clipivo-<version>.zip` from the Releases page and double-click it to unzip.
-2. Drag **Clipivo.app** into your **Applications** folder.
+1. Download `Clipivo-<version>.dmg` from the [Releases page](https://github.com/jishnumahanta/clipivo/releases) and double-click it. (Prefer a zip? Download `Clipivo-<version>.zip` and double-click it to unzip.)
+2. Drag **Clipivo** onto the **Applications** folder, then eject the disk image.
 3. Open it:
    - **macOS 15 Sequoia and later:** double-click Clipivo. When macOS says it can't verify the app, click **Done**. Then open **System Settings ▸ Privacy & Security**, scroll down, click **Open Anyway** next to the Clipivo message and confirm.
    - **macOS 14 Sonoma:** right-click (or Control-click) Clipivo ▸ **Open** ▸ **Open**.
@@ -13,7 +13,7 @@ Clipivo is in free public beta. The beta isn't notarized by Apple yet, so macOS 
 Optional — check the download matches the published checksum:
 
 ```bash
-shasum -a 256 ~/Downloads/Clipivo-*.zip
+shasum -a 256 ~/Downloads/Clipivo-*.dmg
 ```
 
 ## 2. Allow automatic paste
@@ -34,7 +34,7 @@ If Clipivo is already switched on but pasting doesn't work, select it, remove it
 
 ## Updating
 
-Download the new zip and replace Clipivo.app in Applications (quit Clipivo first). Your history is stored separately in `~/Library/Application Support/Clipivo` and is kept.
+Download the new version and replace Clipivo.app in Applications (quit Clipivo first). Your history is stored separately in `~/Library/Application Support/Clipivo` and is kept.
 
 ## Uninstalling
 
@@ -54,6 +54,6 @@ Use one self-signed certificate for every beta release, so testers keep their pe
 2. Name: `Clipivo Beta` · Identity Type: **Self-Signed Root** · Certificate Type: **Code Signing** ▸ Create.
 3. Set **Validity Period** to 3650 days (tick *Let me override defaults*), then in Keychain Access set the certificate's **Trust › Code Signing** to **Always Trust**. `security find-identity -v -p codesigning` should list it.
 4. Build: `VERSION=0.9.0 scripts/make-release.sh`. The scripts sign with "Clipivo Beta" automatically when it's installed.
-5. Upload `dist/release/Clipivo-0.9.0.zip` and its `.sha256` to a GitHub Release.
+5. Upload `dist/release/Clipivo-0.9.0.dmg`, `Clipivo-0.9.0.zip` and their `.sha256` files to a GitHub Release.
 
 Back up that certificate (export it from Keychain Access as .p12). If it's lost, testers must re-grant Accessibility once after the next update.

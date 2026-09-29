@@ -3,7 +3,7 @@
 #
 #   VERSION=0.9.0 scripts/make-release.sh     (signs with "Clipivo Beta" when that certificate is installed)
 #
-# Output: dist/release/Clipivo-<version>.zip and .sha256 (your dist/Clipivo.app is left untouched)
+# Output: dist/release/Clipivo-<version>.dmg and .zip, each with a .sha256 (your dist/Clipivo.app is left untouched)
 #
 # Signing: use the same self-signed certificate for every beta so testers' Accessibility and
 # Keychain permissions survive updates. With a paid Developer ID, also notarize (see CONTRIBUTING.md).
@@ -31,7 +31,19 @@ rm -f "$ZIP" "$ZIP.sha256"
 ditto -c -k --sequesterRsrc --keepParent "$APP" "$ZIP"
 (cd dist/release && shasum -a 256 "$(basename "$ZIP")" > "$(basename "$ZIP").sha256")
 
+echo "==> Building disk image"
+DMG="dist/release/Clipivo-$VERSION.dmg"
+STAGE="$(mktemp -d)"
+trap 'rm -rf "$STAGE"' EXIT
+ditto "$APP" "$STAGE/Clipivo.app"
+ln -s /Applications "$STAGE/Applications"   # drag Clipivo onto this to install
+rm -f "$DMG" "$DMG.sha256"
+hdiutil create -quiet -volname "Clipivo $VERSION" -srcfolder "$STAGE" -fs HFS+ -format UDZO -imagekey zlib-level=9 "$DMG"
+SIGNER="$(codesign -dvv "$APP" 2>&1 | sed -n 's/^Authority=//p' | head -1)"
+if [[ -n "$SIGNER" ]]; then codesign --force --sign "$SIGNER" --timestamp=none "$DMG"; fi
+(cd dist/release && shasum -a 256 "$(basename "$DMG")" > "$(basename "$DMG").sha256")
+
 echo "==> Architectures: $(lipo -archs "$APP/Contents/MacOS/Clipivo")"
 echo "==> Signature: $(codesign -dvv "$APP" 2>&1 | grep -E '^Authority|Signature=adhoc' | head -1)"
-echo "==> Release ready: $ZIP"
-cat "$ZIP.sha256"
+echo "==> Release ready: $DMG and $ZIP"
+cat "$DMG.sha256" "$ZIP.sha256"

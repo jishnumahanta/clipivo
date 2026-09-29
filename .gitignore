@@ -43,7 +43,3 @@ AuthKey_*.p8
 .idea/
 *.tmp
 *.log
-
-# AI tooling notes (local only)
-CLAUDE.md
-AGENTS.md

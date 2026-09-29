@@ -1,6 +1,6 @@
 <!--
   Links on this page. Replace the placeholder website URL before the public launch:
-    Website  (PLACEHOLDER)  https://example.com/clipivo
+    Website                https://clipivo-app.vercel.app  (temporary Vercel address)
     Releases                https://github.com/jishnumahanta/clipivo/releases
 -->
 
@@ -19,7 +19,7 @@ A native macOS clipboard manager that keeps everything you copy searchable, orga
 [![License: source available](https://img.shields.io/badge/license-source%20available-5B5BF0)](LICENSE)
 [![Status: beta](https://img.shields.io/badge/status-beta-D97706)](CHANGELOG.md)
 
-**[Download](https://github.com/jishnumahanta/clipivo/releases)** &nbsp;·&nbsp; [Website](https://example.com/clipivo) &nbsp;·&nbsp; [Features](FEATURES.md)
+**[Download](https://github.com/jishnumahanta/clipivo/releases)** &nbsp;·&nbsp; [Website](https://clipivo-app.vercel.app) &nbsp;·&nbsp; [Features](FEATURES.md)
 
 </div>
 
@@ -83,11 +83,11 @@ Your history stays in your Mac's user folder. Clipivo has no account, no server 
 
 ## Install
 
-1. Download `Clipivo-<version>.zip` from [Releases](https://github.com/jishnumahanta/clipivo/releases), unzip it, and move **Clipivo** to **Applications**.
+1. Download `Clipivo-<version>.dmg` from [Releases](https://github.com/jishnumahanta/clipivo/releases), open it, and drag **Clipivo** onto **Applications**.
 2. Open it. Beta builds aren't notarized yet, so the first time, go to **System Settings › Privacy & Security** and click **Open Anyway**.
 3. Allow **Accessibility** so Clipivo can paste for you, then press **⇧⌘V**.
 
-Requires macOS 14 or later (Apple Silicon or Intel). There's no release yet; the first beta is coming soon. [INSTALL.md](INSTALL.md) covers updating and uninstalling.
+Requires macOS 14 or later (Apple Silicon or Intel). A `.zip` is also available. [INSTALL.md](INSTALL.md) covers updating and uninstalling.
 
 | ⇧⌘V | Return / click | ⇧Return | ⌥Return | Space |
 |:---:|:---:|:---:|:---:|:---:|

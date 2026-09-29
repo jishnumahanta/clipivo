@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.0 — Beta (unreleased)
+## 0.9.0 Beta — 2026-09-29
 
 First public beta.
 
