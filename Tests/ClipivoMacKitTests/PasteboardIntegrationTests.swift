@@ -182,7 +182,12 @@ struct PasteboardIntegrationTests {
     @Test func preferencesPersistAndDeriveSearchFields() {
         let suite = "in.jishnumahanta.clipivo.tests.\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suite)!
-        defer { defaults.removePersistentDomain(forName: suite) }
+        defer {
+            // Removing the domain leaves an empty plist behind; delete it so test runs leave no trace.
+            defaults.removePersistentDomain(forName: suite)
+            let file = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Preferences/\(suite).plist")
+            try? FileManager.default.removeItem(at: file)
+        }
         let prefs = Preferences(defaults: defaults)
         #expect(prefs.panelHotKey == KeyCombo.defaultPanel)
         #expect(prefs.sensitivePolicy == .ask)
