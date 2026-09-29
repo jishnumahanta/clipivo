@@ -56,3 +56,21 @@
 - 🟡 In-panel shortcuts are documented but fixed (only global shortcuts are rebindable)
 - ⏳ Drag clips out to other apps; drag clips onto Spaces
 - ⏳ URL favicons
+
+## Keyboard shortcuts
+
+| Shortcut | Action |
+|---|---|
+| ⇧⌘V | Open or close Clipivo (configurable) |
+| ← → ↑ ↓ | Move the selection (⇧ extends it) |
+| Return · click · ⌘1–⌘9 | Paste |
+| ⇧Return · ⇧-click | Paste as plain text |
+| ⌥Return · ⌥-click · ⌘C | Copy without pasting |
+| Space · ⌘Y | Quick Look |
+| ⌘P · ⌘R · ⌘T | Pin · rename · tag |
+| ⌘N | New Space from the selection |
+| ⌫ · ⌘⌫ | Delete |
+| ⇥ · ⌘[ ⌘] | Cycle the type filter · switch Space |
+| Esc | Clear the search, then close |
+
+A second global shortcut, *Paste latest clip as plain text*, can be set in Settings › Keyboard.

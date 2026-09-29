@@ -30,6 +30,19 @@ name, logo or artwork in a way that suggests your fork is an official Clipivo re
 2. `swift build` to compile, `scripts/build-app.sh` to produce `dist/Clipivo.app`.
 3. Open `Package.swift` in Xcode for editing/debugging.
 
+## Build configuration
+
+| | |
+|---|---|
+| Bundle identifier | `in.jishnumahanta.clipivo` (permanent; extensions use `in.jishnumahanta.clipivo.<name>`) |
+| Deployment target | macOS 14 |
+| Architectures | arm64 and x86_64 (release builds are universal) |
+| App Sandbox | Off: pasting into other apps needs Accessibility, which the sandbox doesn't allow |
+| Signing | `CODESIGN_IDENTITY` if set, otherwise an installed Apple Development identity, otherwise ad-hoc |
+| Permissions | Accessibility (automatic paste), Keychain (private clips only) |
+
+Ad-hoc builds get a new signature on every rebuild, and macOS then forgets the Accessibility permission. Sign with a stable identity to keep it.
+
 ## Rules
 - `ClipivoCore` must not import AppKit, SwiftUI or any Apple-only UI framework.
 - Never log clipboard content. Never add network calls without an explicit, off-by-default setting.

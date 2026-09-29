@@ -168,7 +168,7 @@ final class PanelController: NSObject, NSWindowDelegate {
 
     /// Demo mode: renders the panel's own content to a PNG (no screen-recording permission needed).
     func writeSnapshot(to url: URL) {
-        panel.contentView?.writePNGSnapshot(to: url)
+        panel.contentView?.writePNGSnapshot(to: url, solidifyVibrancy: viewModel.quickLookID != nil)
     }
 
     private func shelfFrame(on visible: NSRect, expanded: Bool) -> NSRect {

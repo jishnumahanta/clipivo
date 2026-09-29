@@ -90,7 +90,9 @@ private final class SnapshotFill: NSView {
 
 extension NSView {
     /// Renders this view (and its subviews) to a PNG over an opaque background.
-    func writePNGSnapshot(to url: URL) {
+    /// `solidifyVibrancy` backs nested frosted areas (the panel's Quick Look) with an opaque fill;
+    /// leave it off for standard windows like Settings, whose content lives inside effect views.
+    func writePNGSnapshot(to url: URL, solidifyVibrancy: Bool = false) {
         let bounds = self.bounds
         guard let rep = bitmapImageRepForCachingDisplay(in: bounds) else { return }
         // Vibrancy (NSVisualEffectView) is composited by the window server and would come out
@@ -107,7 +109,7 @@ extension NSView {
                 addFills(subview)
             }
         }
-        addFills(self)
+        if solidifyVibrancy { addFills(self) }
         cacheDisplay(in: bounds, to: rep)
         fills.forEach { $0.removeFromSuperview() }
         let dark = effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
