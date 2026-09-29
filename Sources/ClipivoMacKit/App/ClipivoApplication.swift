@@ -24,12 +24,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var welcomeWindow: HostedWindowController<WelcomeView>?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        let demo = DemoMode.current
-        if demo == nil { AppIdentity.migrateLegacyPreferences() }
+        AppIdentity.migrateLegacyPreferences()
         installMainMenu()
         let model: AppModel
         do {
-            model = try demo?.makeModel() ?? AppModel()
+            model = try AppModel()
         } catch {
             let alert = NSAlert()
             alert.messageText = "\(Branding.productName) couldn't open its clipboard library"
@@ -65,45 +64,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         model.onStateChange = { [weak self] in self?.statusItem?.refresh() }
         model.start()
 
-        if let demo {
-            runDemo(demo)
-        } else if !model.preferences.hasCompletedOnboarding {
+        if !model.preferences.hasCompletedOnboarding {
             showWelcome()
-        }
-    }
-
-    /// Demo mode: show the requested screen, snapshot it, quit. See `DemoMode`.
-    private func runDemo(_ demo: DemoMode) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            guard let self else { return }
-            if let section = demo.settingsSection {
-                self.showSettings(section: section)
-                return
-            }
-            self.panel?.show()
-            if let search = demo.search { self.panel?.viewModel.searchText = search }
-        }
-        if let index = demo.quickLookIndex {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
-                guard let model = self?.panel?.viewModel, model.results.indices.contains(index) else { return }
-                model.selectedID = model.results[index].id
-                model.quickLookID = model.results[index].id
-            }
-        }
-        guard let snapshot = demo.snapshotPath else { return }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-            if demo.settingsSection != nil {
-                self?.settingsWindow?.contentView?.writePNGSnapshot(to: snapshot)
-            } else {
-                self?.panel?.writeSnapshot(to: snapshot)
-            }
-            NSApp.terminate(nil)
         }
     }
 
     func applicationWillTerminate(_ notification: Notification) {
         app?.stop()
-        if app?.isDemo == true { DemoMode.cleanUp() }
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
@@ -112,11 +79,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return false
     }
 
-    private func showSettings(section: SettingsSection = .general) {
+    private func showSettings() {
         guard let app else { return }
         if settingsWindow == nil {
             settingsWindow = HostedWindowController(title: "\(Branding.productName) Settings", size: NSSize(width: 760, height: 560)) {
-                SettingsView(app: app, section: section)
+                SettingsView(app: app)
             }
         }
         settingsWindow?.show()

@@ -166,11 +166,6 @@ final class PanelController: NSObject, NSWindowDelegate {
         panel.setFrame(NSRect(origin: origin, size: size), display: false)
     }
 
-    /// Demo mode: renders the panel's own content to a PNG (no screen-recording permission needed).
-    func writeSnapshot(to url: URL) {
-        panel.contentView?.writePNGSnapshot(to: url, solidifyVibrancy: viewModel.quickLookID != nil)
-    }
-
     private func shelfFrame(on visible: NSRect, expanded: Bool) -> NSRect {
         let margin: CGFloat = 8
         let base = min(max(CGFloat(app.preferences.shelfHeight), 220), visible.height * 0.6)

@@ -59,26 +59,9 @@ CLIPIVO_STRESS=1 swift test -c release --filter Stress   # 100k and 500k record 
 ```
 Test suites: classification, code detection, sensitive content, search syntax, persistence, capture policy, search, Spaces/pins/cleanup, background OCR/thumbnails, archive import/export, stress/memory, pasteboard integration, monitor, preferences.
 
-## Screenshots and demo mode
+## Screenshots
 
-README screenshots come from the real app running in **demo mode** over a sample library, never from anyone's real clipboard:
-
-```bash
-scripts/demo-screenshots.sh          # seeds sample clips, captures assets/screenshots/*.png
-scripts/demo-screenshots.sh --keep   # …and leaves a demo instance running for manual shots (menu bar menu)
-```
-
-Demo mode is enabled only by the `-ClipivoDemoLibrary <dir>` launch argument — never by saved preferences — and refuses the real library folder. In demo mode Clipivo doesn't monitor the clipboard, register global shortcuts, touch your preferences (it uses a throwaway domain) or use the Keychain (it uses an in-memory key). Other flags, which only work together with `-ClipivoDemoLibrary`:
-
-| Flag | Effect |
-|---|---|
-| `-ClipivoSnapshotPath <file.png>` | Render the panel (or Settings) to a PNG after launch, then quit |
-| `-ClipivoSearch <text>` | Type a search first |
-| `-ClipivoQuickLook <index>` | Open Quick Look on that result (0 = newest) |
-| `-ClipivoSettings <section>` | Show Settings at that section (`general`, `privacy`, …) instead of the panel |
-| `-appearance light\|dark`, `-panelLayout shelf\|list` | Theme and layout for this launch |
-
-The sample clips are defined in `Tests/ClipivoMacKitTests/DemoLibrarySeeder.swift`; the flags in `Sources/ClipivoMacKit/App/DemoMode.swift`.
+README screenshots in `assets/screenshots/` show sample data only — never a real clipboard. The demo mode used to make them was removed after capture; it's in the history at commit `40b8e62` if new screenshots are needed.
 
 ## Performance baselines
 Recorded by the stress tests (`[stress N]` lines). Budgets enforced by tests: first page / filters / search under 250 ms at 10k (debug), 500 ms at 50k (debug), 600 ms at 100k and 2 s at 500k (release), with resident memory growth under 300 MB.
