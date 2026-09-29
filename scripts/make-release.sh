@@ -1,7 +1,7 @@
 #!/bin/bash
 # Builds a distributable Clipivo release zip.
 #
-#   VERSION=0.9.0 CODESIGN_IDENTITY="Clipivo Beta" scripts/make-release.sh
+#   VERSION=0.9.0 scripts/make-release.sh     (signs with "Clipivo Beta" when that certificate is installed)
 #
 # Output: dist/release/Clipivo-<version>.zip and .sha256 (your dist/Clipivo.app is left untouched)
 #
@@ -11,8 +11,8 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 VERSION="${VERSION:?Set VERSION, e.g. VERSION=0.9.0}"
-if [[ -z "${CODESIGN_IDENTITY:-}" ]]; then
-  echo "warning: no CODESIGN_IDENTITY set — the release will be ad-hoc signed and testers will" >&2
+if [[ -z "${CODESIGN_IDENTITY:-}" ]] && ! security find-identity -v -p codesigning 2>/dev/null | grep -q '"Clipivo Beta"'; then
+  echo "warning: no CODESIGN_IDENTITY or \"Clipivo Beta\" certificate — the release will be ad-hoc signed and testers will" >&2
   echo "         have to re-grant Accessibility after every update. See INSTALL.md › For maintainers." >&2
 fi
 
@@ -32,6 +32,6 @@ ditto -c -k --sequesterRsrc --keepParent "$APP" "$ZIP"
 (cd dist/release && shasum -a 256 "$(basename "$ZIP")" > "$(basename "$ZIP").sha256")
 
 echo "==> Architectures: $(lipo -archs "$APP/Contents/MacOS/Clipivo")"
-echo "==> Signature: $(codesign -dv "$APP" 2>&1 | grep -E '^Authority|Signature=' | head -1)"
+echo "==> Signature: $(codesign -dvv "$APP" 2>&1 | grep -E '^Authority|Signature=adhoc' | head -1)"
 echo "==> Release ready: $ZIP"
 cat "$ZIP.sha256"

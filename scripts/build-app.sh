@@ -15,11 +15,17 @@ BUNDLE_ID="${BUNDLE_ID:-in.jishnumahanta.clipivo}"
 VERSION="${VERSION:-1.0.0}"
 BUILD_NUMBER="${BUILD_NUMBER:-$(date +%Y%m%d%H%M)}"
 CONFIG="${CONFIG:-release}"
-# Signing: an explicit identity wins; otherwise use an Apple Development certificate if one exists
-# (a stable identity keeps the Accessibility permission across rebuilds); otherwise ad-hoc.
+# Signing: an explicit identity wins; otherwise the "Clipivo Beta" certificate (see INSTALL.md) or an
+# Apple Development certificate if one exists (a stable identity keeps the Accessibility permission
+# across rebuilds); otherwise ad-hoc.
 IDENTITY="${CODESIGN_IDENTITY:-}"
 if [[ -z "$IDENTITY" ]]; then
-  IDENTITY="$(security find-identity -v -p codesigning 2>/dev/null | grep -m1 -oE '"Apple Development: [^"]+"' | tr -d '"' || true)"
+  IDENTITIES="$(security find-identity -v -p codesigning 2>/dev/null || true)"
+  if grep -q '"Clipivo Beta"' <<<"$IDENTITIES"; then
+    IDENTITY="Clipivo Beta"
+  else
+    IDENTITY="$(grep -m1 -oE '"Apple Development: [^"]+"' <<<"$IDENTITIES" | tr -d '"' || true)"
+  fi
 fi
 if [[ -z "$IDENTITY" ]]; then
   IDENTITY="-"
