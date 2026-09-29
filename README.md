@@ -26,6 +26,10 @@ A native macOS clipboard manager that keeps everything you copy searchable, orga
 <br>
 
 <p align="center">
+  <img src="assets/demo.gif" width="880" alt="Typing “weekly review” in Clipivo finds a screenshot containing those words, then Quick Look shows the recognised text">
+</p>
+
+<p align="center">
   <img src="assets/screenshots/shelf-light.png" alt="Clipivo's card shelf: recent clips shown as cards for text, a link, Swift code, a color, an email address and a screenshot">
 </p>
 
