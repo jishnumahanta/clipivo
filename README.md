@@ -59,6 +59,24 @@ You copy something useful, then something else, and the first thing is gone. **C
 <p align="center"><sub>Floating list, light · Privacy settings</sub></p>
 </details>
 
+## How Clipivo compares
+
+| | **Clipivo** | Typical free / open-source managers | Typical paid managers |
+|---|:---:|:---:|:---:|
+| History with no item cap or expiry | ✅ | Usually capped at a few hundred items | Varies by plan |
+| Keeps rich text, images, files and PDFs | ✅ | Often text and images only | ✅ |
+| Search text inside screenshots (on-device) | ✅ | Rare | Some |
+| Ranked search with filters (`app:` `type:` `date:`) | ✅ | Basic search | Some |
+| Spaces, pins, titles and tags | ✅ | Pins at most | ✅ |
+| Card shelf *and* floating list layouts | ✅ | List only | Usually one layout |
+| Detects secrets, with a rule per type | ✅ | Password managers only | Varies |
+| Encrypted private clips and Touch ID lock | ✅ | Rare | Some |
+| No account, no cloud, no analytics | ✅ | ✅ | Often needs an account |
+| Source you can inspect | ✅ source available | ✅ | Rarely |
+| Sync across devices | Planned | Rare | Often ✅ |
+
+<sub>A general comparison of the categories, not of any specific app; individual apps vary.</sub>
+
 ## Private by default
 
 Your history stays in your Mac's user folder. Clipivo has no account, no server and no analytics, and it never writes clipboard contents to logs. Text in images is recognised on-device with Apple Vision. Clipivo doesn't read the clipboard at all while you copy from an ignored app. Password-manager copies and likely secrets follow the rules you choose. The only optional network feature, fetching titles for copied links, is off by default. See [SECURITY.md](SECURITY.md) for details.
