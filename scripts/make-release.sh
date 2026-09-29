@@ -39,8 +39,11 @@ ditto "$APP" "$STAGE/Clipivo.app"
 ln -s /Applications "$STAGE/Applications"   # drag Clipivo onto this to install
 rm -f "$DMG" "$DMG.sha256"
 hdiutil create -quiet -volname "Clipivo $VERSION" -srcfolder "$STAGE" -fs HFS+ -format UDZO -imagekey zlib-level=9 "$DMG"
+# Only a Developer ID signature helps on a disk image. Gatekeeper checks a *signed* DMG when it's
+# opened and rejects self-signed ones, while an unsigned DMG opens normally and only the app inside
+# is checked (the single "Open Anyway" step). So sign the DMG only with Developer ID.
 SIGNER="$(codesign -dvv "$APP" 2>&1 | sed -n 's/^Authority=//p' | head -1)"
-if [[ -n "$SIGNER" ]]; then codesign --force --sign "$SIGNER" --timestamp=none "$DMG"; fi
+if [[ "$SIGNER" == "Developer ID Application:"* ]]; then codesign --force --sign "$SIGNER" --timestamp "$DMG"; fi
 (cd dist/release && shasum -a 256 "$(basename "$DMG")" > "$(basename "$DMG").sha256")
 
 echo "==> Architectures: $(lipo -archs "$APP/Contents/MacOS/Clipivo")"
