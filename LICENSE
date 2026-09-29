@@ -1,0 +1,92 @@
+Clipivo Source-Available License
+Version 1.0
+
+Copyright (c) 2026 Jishnu Mahanta. All rights reserved.
+
+Clipivo is proprietary software. Its source code is published so people can
+inspect how it works. It is NOT open source, and this license is not an
+open-source license.
+
+1. DEFINITIONS
+
+"Software" means the Clipivo source code, build scripts, documentation and
+all other files in this repository, and any compiled form of them.
+
+"Brand Assets" means the name "Clipivo", the Clipivo logo and app icon, the
+menu bar icon, and all other Clipivo artwork, screenshots and visual branding.
+
+"Licensor" means Jishnu Mahanta.
+
+2. WHAT YOU MAY DO
+
+Subject to the terms of this license, you may:
+
+  (a) view and read the Software;
+  (b) fork the repository on GitHub, as permitted by GitHub's Terms of
+      Service, for the purpose of viewing it or proposing contributions;
+  (c) build and run the Software on your own devices, privately, solely to
+      evaluate it, review its security, or prepare a contribution to the
+      official repository.
+
+3. WHAT YOU MAY NOT DO
+
+Except as expressly permitted above, or with the Licensor's prior written
+permission, you may not:
+
+  (a) copy, reproduce or redistribute the Software, in source or compiled
+      form, in whole or in part;
+  (b) modify the Software or create derivative works based on it, other
+      than to prepare a contribution under section 2(c);
+  (c) sublicense, sell, rent, lease or otherwise commercialize the Software,
+      or use it to provide a product or service to others;
+  (d) publish or distribute builds of the Software, including modified or
+      derivative builds, or builds made from a fork;
+  (e) remove or alter any copyright, license or attribution notice.
+
+Forking on GitHub does not grant any of these rights. A fork may be used
+only as described in section 2; it may not be published, redistributed,
+commercialized or sublicensed, and builds of it, modified or not, may not be
+distributed to anyone.
+
+Commercial use or reuse of any part of the Software requires a separate
+written license from the Licensor. Contact: jishnumahanta17@gmail.com
+
+4. NAME, LOGO AND BRANDING ARE NOT LICENSED
+
+No right or license is granted to use any Brand Assets, whether under this
+license or by implication. In particular:
+
+  (a) the Clipivo name is not licensed;
+  (b) the Clipivo logo and app icon are not licensed;
+  (c) Clipivo artwork and branding are not licensed.
+
+A fork or any other copy of this repository must not use the Brand Assets in
+a way that suggests it is an official Clipivo release, or that it is made,
+endorsed or supported by the Licensor.
+
+5. CONTRIBUTIONS
+
+Contributions to the official repository are accepted only under the terms
+in CONTRIBUTING.md.
+
+6. TERMINATION
+
+Any use of the Software that breaches this license ends your rights under it
+immediately and automatically.
+
+7. NO WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+LICENSOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OF OR OTHER DEALINGS IN THE SOFTWARE.
+
+8. RESERVATION OF RIGHTS AND FUTURE CHANGES
+
+All rights not expressly granted are reserved by the Licensor. The Licensor
+may release future versions of Clipivo under different terms, including an
+open-source, dual or commercial license. Any such change applies only to the
+versions it is published with, and does not grant rights in earlier versions
+unless it says so.

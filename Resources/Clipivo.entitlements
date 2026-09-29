@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<!--
+  Clipivo is distributed outside the Mac App Store (Developer ID) and is not sandboxed:
+  posting the ⌘V keystroke for automatic paste requires Accessibility, which sandboxed
+  apps cannot use. The hardened runtime is enabled at signing time. No extra entitlements
+  are needed: there is no network server, no Apple Events and no JIT.
+-->
+<dict>
+</dict>
+</plist>
