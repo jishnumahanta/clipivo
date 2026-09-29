@@ -12,7 +12,8 @@ cd "$(dirname "$0")/.."
 
 PRODUCT_NAME="${PRODUCT_NAME:-Clipivo}"
 BUNDLE_ID="${BUNDLE_ID:-in.jishnumahanta.clipivo}"
-VERSION="${VERSION:-1.0.0}"
+# The version comes from the VERSION file unless overridden (VERSION=x.y.z scripts/build-app.sh).
+VERSION="${VERSION:-$(tr -d '[:space:]' < VERSION)}"
 BUILD_NUMBER="${BUILD_NUMBER:-$(date +%Y%m%d%H%M)}"
 CONFIG="${CONFIG:-release}"
 # Signing: an explicit identity wins; otherwise the "Clipivo Beta" certificate (see INSTALL.md) or an

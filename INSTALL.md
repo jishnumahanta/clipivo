@@ -53,7 +53,7 @@ Use one self-signed certificate for every beta release, so testers keep their pe
 1. Keychain Access ▸ Certificate Assistant ▸ **Create a Certificate…**
 2. Name: `Clipivo Beta` · Identity Type: **Self-Signed Root** · Certificate Type: **Code Signing** ▸ Create.
 3. Set **Validity Period** to 3650 days (tick *Let me override defaults*), then in Keychain Access set the certificate's **Trust › Code Signing** to **Always Trust**. `security find-identity -v -p codesigning` should list it.
-4. Build: `VERSION=0.9.0 scripts/make-release.sh`. The scripts sign with "Clipivo Beta" automatically when it's installed.
-5. Upload `dist/release/Clipivo-0.9.0.dmg`, `Clipivo-0.9.0.zip` and their `.sha256` files to a GitHub Release.
+4. Bump the `VERSION` file, then run `scripts/make-release.sh`. The scripts sign with "Clipivo Beta" automatically when it's installed.
+5. Upload `dist/release/Clipivo-<version>.dmg`, `Clipivo-<version>.zip` and their `.sha256` files to a GitHub Release.
 
 Back up that certificate (export it from Keychain Access as .p12). If it's lost, testers must re-grant Accessibility once after the next update.

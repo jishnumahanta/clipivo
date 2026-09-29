@@ -1,8 +1,9 @@
 #!/bin/bash
 # Builds a distributable Clipivo release zip.
 #
-#   VERSION=0.9.0 scripts/make-release.sh     (signs with "Clipivo Beta" when that certificate is installed)
+#   scripts/make-release.sh     builds the version in the VERSION file (bump that file first)
 #
+# Signs with "Clipivo Beta" when that certificate is installed.
 # Output: dist/release/Clipivo-<version>.dmg and .zip, each with a .sha256 (your dist/Clipivo.app is left untouched)
 #
 # Signing: use the same self-signed certificate for every beta so testers' Accessibility and
@@ -10,7 +11,12 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-VERSION="${VERSION:?Set VERSION, e.g. VERSION=0.9.0}"
+FILE_VERSION="$(tr -d '[:space:]' < VERSION)"
+VERSION="${VERSION:-$FILE_VERSION}"
+if [[ "$VERSION" != "$FILE_VERSION" ]]; then
+  echo "error: VERSION=$VERSION doesn't match the VERSION file ($FILE_VERSION). Bump the file instead." >&2
+  exit 1
+fi
 if [[ -z "${CODESIGN_IDENTITY:-}" ]] && ! security find-identity -v -p codesigning 2>/dev/null | grep -q '"Clipivo Beta"'; then
   echo "warning: no CODESIGN_IDENTITY or \"Clipivo Beta\" certificate — the release will be ad-hoc signed and testers will" >&2
   echo "         have to re-grant Accessibility after every update. See INSTALL.md › For maintainers." >&2

@@ -77,8 +77,8 @@ Release build, Apple Silicon, synthetic data where nearly every clip matches com
 Real histories are far sparser than this synthetic set, so searches are usually much faster. Known next optimisation: when a term matches a huge share of the history, rank only the most recent N matches instead of bm25 over all of them.
 
 ## Release process
-1. Bump `VERSION` (and optionally `BUILD_NUMBER`).
+1. Bump the version in the `VERSION` file (every build, including local ones, reads it) and add a CHANGELOG entry.
 2. `swift test` and the stress suite must pass with no warnings (`swift build 2>&1 | grep warning:` is empty).
-3. `UNIVERSAL=1 CODESIGN_IDENTITY="Developer ID Application: …" VERSION=x.y.z scripts/build-app.sh`
-4. Notarize: `ditto -c -k --keepParent dist/Clipivo.app Clipivo.zip && xcrun notarytool submit Clipivo.zip --keychain-profile <profile> --wait && xcrun stapler staple dist/Clipivo.app`
-5. Package as DMG/zip and publish release notes.
+3. `scripts/make-release.sh` builds the universal app, signs it with "Clipivo Beta", and writes the DMG, zip and checksums to `dist/release/`.
+4. Publish: `gh release create v<version>-beta dist/release/Clipivo-<version>.* --title "Clipivo <version> Beta" --notes-file <notes> --latest`
+5. With a paid Developer ID later: sign with `CODESIGN_IDENTITY="Developer ID Application: …"`, then notarize (`xcrun notarytool submit … --wait`) and staple (`xcrun stapler staple`) the app and DMG.
