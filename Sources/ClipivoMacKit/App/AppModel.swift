@@ -209,6 +209,33 @@ public final class AppModel {
         onStateChange?()
     }
 
+    /// Brings in history pasted or exported from another clipboard manager. Each entry runs through
+    /// the normal capture pipeline (so links, colors, code, etc. are classified the same as a live
+    /// copy), then all of them are written in one batch. Nothing is read from any other app — the
+    /// caller already has the text, from a paste or a chosen file — so this needs no extra permission.
+    ///
+    /// Bulk-imported text is trusted as-is: sensitive-content detection is skipped (so a few hundred
+    /// imported lines can't spawn a few hundred "is this a secret?" banners). The first entry becomes
+    /// the newest clip; later entries are dated a second earlier each, oldest last, preserving order.
+    public func importPlainTextHistory(_ entries: [String], sourceAppName: String) async throws -> Int {
+        guard !entries.isEmpty else { return 0 }
+        let source = SourceApplication(bundleID: "app.clipivo.import", name: sourceAppName.isEmpty ? "Imported" : sourceAppName)
+        var policy = CapturePolicy()
+        policy.concealedPolicy = .save
+        policy.sensitivePolicy = .save
+        policy.oneTimeCodePolicy = .save
+        let now = Date()
+        var prepared: [PreparedClip] = []
+        for (index, entry) in entries.enumerated() {
+            var snapshot = ClipboardSnapshot.text(entry, source: source)
+            snapshot.capturedAt = now.addingTimeInterval(-Double(index))
+            if case .ready(let clip) = processor.prepare(snapshot, policy: policy) { prepared.append(clip) }
+        }
+        guard !prepared.isEmpty else { return 0 }
+        _ = try await library.storeBatch(prepared)
+        return prepared.count
+    }
+
     public func setPaused(_ paused: Bool) {
         preferences.monitoringPaused = paused
         applyCapturePolicy()

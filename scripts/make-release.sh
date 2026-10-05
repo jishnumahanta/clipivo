@@ -39,12 +39,36 @@ ditto -c -k --sequesterRsrc --keepParent "$APP" "$ZIP"
 
 echo "==> Building disk image"
 DMG="dist/release/Clipivo-$VERSION.dmg"
-STAGE="$(mktemp -d)"
-trap 'rm -rf "$STAGE"' EXIT
-ditto "$APP" "$STAGE/Clipivo.app"
-ln -s /Applications "$STAGE/Applications"   # drag Clipivo onto this to install
 rm -f "$DMG" "$DMG.sha256"
-hdiutil create -quiet -volname "Clipivo $VERSION" -srcfolder "$STAGE" -fs HFS+ -format UDZO -imagekey zlib-level=9 "$DMG"
+
+# Lays out the DMG window (background, icon positions, size) by writing the .DS_Store directly via
+# dmgbuild — no Finder/AppleScript automation, so no Automation permission prompt and nothing that
+# can race against Finder's own window animations. Bootstraps its own throwaway venv on first run.
+VENV=.release-venv
+if [[ ! -x "$VENV/bin/dmgbuild" ]]; then
+  echo "    (first run) setting up $VENV for dmgbuild"
+  python3 -m venv "$VENV"
+  "$VENV/bin/pip" install --quiet --upgrade pip dmgbuild
+fi
+SETTINGS="$(mktemp -t clipivo-dmg-settings).py"
+trap 'rm -f "$SETTINGS"' EXIT
+cat > "$SETTINGS" <<PY
+import os
+app = os.environ["DMG_APP"]
+files = [app]
+symlinks = {"Applications": "/Applications"}
+icon_locations = {
+    os.path.basename(app): (140, 152),
+    "Applications": (420, 152),
+}
+background = os.environ["DMG_BACKGROUND"]
+window_rect = ((400, 100), (560, 380))
+icon_size = 128
+format = "UDZO"
+compression_level = 9
+PY
+DMG_APP="$(pwd)/$APP" DMG_BACKGROUND="$(pwd)/Resources/dmg-background.png" \
+  "$VENV/bin/dmgbuild" -s "$SETTINGS" "Clipivo $VERSION" "$DMG"
 # Only a Developer ID signature helps on a disk image. Gatekeeper checks a *signed* DMG when it's
 # opened and rejects self-signed ones, while an unsigned DMG opens normally and only the app inside
 # is checked (the single "Open Anyway" step). So sign the DMG only with Developer ID.

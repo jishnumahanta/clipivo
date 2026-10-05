@@ -52,6 +52,7 @@
 - ✅ Light/Dark/System, compact/comfortable density, reduced motion, VoiceOver labels
 - ✅ Storage statistics, thumbnail cache clearing, compaction, index rebuild
 - ✅ Export/import `.clipivo` archives (dedupe-safe), automatic local backups
+- ✅ Import history from another clipboard manager: paste its history list, or import a file it exported (no extra permission; each item is classified the same as a fresh copy)
 - ✅ Launch at login, welcome/onboarding window
 - ✅ Update checks: "Check Now" in Settings ▸ General and "Check for Updates…" in the menu, plus an optional daily check (off by default) that shows "Update Available" in the menu bar menu
 - 🟡 In-panel shortcuts are documented but fixed (only global shortcuts are rebindable)

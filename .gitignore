@@ -15,6 +15,9 @@ xcuserdata/
 dist/
 *.dmg
 
+# Isolated Python venv make-release.sh bootstraps itself, to lay out the DMG window (dmgbuild)
+.release-venv/
+
 # Clipboard libraries and databases — never commit real clipboard data
 *.sqlite
 *.sqlite-wal

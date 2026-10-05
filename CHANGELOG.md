@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.5 Beta — 2026-10-06
+
+- Import history from another clipboard manager: Settings ▸ Storage ▸ "Import from another app" — paste its history list, or import a file it exported. No extra permission needed; each item is classified the same as a fresh copy, so you can switch over and remove the old app.
+- The installer DMG now shows an app → Applications arrow and holds both icons in place, instead of two icons scattered wherever Finder last remembered.
+
 ## 0.9.4 Beta — 2026-10-05
 
 - Jump to the newest clip: a "Latest" button appears in the panel once you've scrolled away from the top (also ⌘↑ in the list, ⌘← in the shelf — these shortcuts already existed but weren't shown anywhere)

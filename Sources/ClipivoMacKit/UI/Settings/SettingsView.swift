@@ -562,6 +562,7 @@ struct StorageSettings: View {
     @State private var stats: StorageStatistics?
     @State private var busy: String?
     @State private var progress: Double?
+    @State private var showingHistoryImport = false
 
     var body: some View {
         @Bindable var prefs = app.preferences
@@ -604,6 +605,14 @@ struct StorageSettings: View {
                 Text("Archives (.clipivo) contain clips with their original data, titles, timestamps, source apps, Spaces, pins, tags and recognized text. Importing skips clips you already have.")
                     .font(.caption).foregroundStyle(.secondary)
             }
+            Section("Import from another app") {
+                HStack {
+                    Button("Paste Clipboard History…") { showingHistoryImport = true }
+                    Button("Import a Text File…") { importHistoryFile() }
+                }
+                Text("Brings in the text of items from another clipboard manager — paste what you select in its history list, or import a file it exported. Nothing is read from that app automatically, and no extra permission is needed. Each item becomes a new text clip dated from just now (the original timestamps, formatting and images aren't carried over), classified the same way a fresh copy would be.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
             Section("Backups") {
                 Toggle("Back up automatically", isOn: $prefs.autoBackupEnabled)
                 Picker("Every", selection: $prefs.autoBackupIntervalDays) {
@@ -626,6 +635,25 @@ struct StorageSettings: View {
             }
         }
         .task { await reload() }
+        .sheet(isPresented: $showingHistoryImport) { HistoryImportSheet(app: app) { handleImportResult($0) } }
+    }
+
+    private func handleImportResult(_ importedCount: Int) {
+        app.show("Imported \(importedCount.formatted()) clip\(importedCount == 1 ? "" : "s")", style: importedCount > 0 ? .success : .warning)
+        Task { await reload() }
+    }
+
+    private func importHistoryFile() {
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.plainText, .json, .commaSeparatedText, .text, .data]
+        panel.message = "Choose a file exported from another clipboard manager."
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        run("Importing") {
+            let data = try Data(contentsOf: url)
+            let entries = HistoryImport.read(fileContents: data, fallbackMode: .paragraph)
+            let count = try await app.importPlainTextHistory(entries, sourceAppName: url.deletingPathExtension().lastPathComponent)
+            app.show("Imported \(count.formatted()) clip\(count == 1 ? "" : "s")", style: count > 0 ? .success : .warning)
+        }
     }
 
     private func reload() async {
@@ -673,6 +701,71 @@ struct StorageSettings: View {
             }
             app.show("Imported \(summary.clipsImported.formatted()) clips (\(summary.clipsMerged) merged, \(summary.clipsSkipped) already present)", style: .success)
             app.background.schedule()
+        }
+    }
+}
+
+/// Lets the user paste whatever they selected in another clipboard manager's history list and bring
+/// it into Clipivo — no permission beyond the paste itself is needed, since nothing is read from the
+/// other app directly.
+struct HistoryImportSheet: View {
+    let app: AppModel
+    let onImported: (Int) -> Void
+    @Environment(\.dismiss) private var dismiss
+    @State private var sourceAppName = ""
+    @State private var text = ""
+    @State private var mode: HistoryImport.SplitMode = .line
+    @State private var isImporting = false
+
+    private var entries: [String] { HistoryImport.split(text, mode: mode) }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("Paste Clipboard History").font(.headline)
+            Text("In the other app, select its history (or as much as it'll let you select) and copy it, then paste below. Each item becomes a new text clip — formatting, images and the original dates aren't carried over.")
+                .font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+
+            TextField("Where it's from (e.g. Maccy, Paste) — optional", text: $sourceAppName)
+                .textFieldStyle(.roundedBorder)
+
+            Picker("Split into clips", selection: $mode) {
+                ForEach(HistoryImport.SplitMode.allCases, id: \.self) { Text($0.displayName).tag($0) }
+            }
+            .pickerStyle(.radioGroup)
+
+            TextEditor(text: $text)
+                .font(.system(.body, design: .monospaced))
+                .frame(minHeight: 180)
+                .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(Color.primary.opacity(0.15)))
+                .overlay(alignment: .topLeading) {
+                    if text.isEmpty {
+                        Text("Paste here…").foregroundStyle(.tertiary).padding(6).allowsHitTesting(false)
+                    }
+                }
+
+            HStack {
+                Text(entries.isEmpty ? "Nothing to import yet" : "\(entries.count.formatted()) clip\(entries.count == 1 ? "" : "s") will be imported")
+                    .font(.caption).foregroundStyle(.secondary)
+                Spacer()
+                Button("Cancel") { dismiss() }.keyboardShortcut(.cancelAction)
+                Button(isImporting ? "Importing…" : "Import") { importNow() }
+                    .keyboardShortcut(.defaultAction)
+                    .disabled(entries.isEmpty || isImporting)
+            }
+        }
+        .padding(20)
+        .frame(width: 480)
+    }
+
+    private func importNow() {
+        let entries = self.entries
+        let name = sourceAppName
+        isImporting = true
+        Task {
+            let count = (try? await app.importPlainTextHistory(entries, sourceAppName: name)) ?? 0
+            isImporting = false
+            dismiss()
+            onImported(count)
         }
     }
 }
