@@ -202,6 +202,13 @@ public final class AppModel {
         }
     }
 
+    /// Discards every pending sensitive-content review at once (none of them are saved).
+    public func discardAllPending() {
+        guard !pendingCaptures.isEmpty else { return }
+        pendingCaptures.removeAll()
+        onStateChange?()
+    }
+
     public func setPaused(_ paused: Bool) {
         preferences.monitoringPaused = paused
         applyCapturePolicy()

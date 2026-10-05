@@ -257,9 +257,7 @@ struct ClipListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ForEach(app.pendingCaptures) { pending in
-                PendingCaptureBanner(pending: pending, app: app)
-            }
+            PendingCaptureStack(pendings: app.pendingCaptures, app: app)
             if model.results.isEmpty && !model.isLoading {
                 EmptyStateView(model: model, app: app)
             } else {
@@ -358,6 +356,44 @@ struct EmptyStateView: View {
     }
 }
 
+/// Shows pending sensitive-content reviews. A single item gets its own banner; several collapse
+/// into one summary row (expandable) with a "Discard All" shortcut, so reviews can't pile up.
+struct PendingCaptureStack: View {
+    let pendings: [PendingCapture]
+    let app: AppModel
+    @State private var expanded = false
+
+    var body: some View {
+        if pendings.count <= 1 {
+            ForEach(pendings) { PendingCaptureBanner(pending: $0, app: app) }
+        } else {
+            VStack(spacing: 0) {
+                HStack(spacing: 14) {
+                    Image(systemName: "exclamationmark.shield.fill").foregroundStyle(.yellow).font(.title3)
+                    Text("\(pendings.count) items awaiting review").font(.system(size: 12.5, weight: .semibold))
+                    Spacer(minLength: 8)
+                    Button("Discard All") { app.discardAllPending() }
+                        .buttonStyle(.bordered)
+                        .contentShape(Rectangle())
+                    Button(expanded ? "Hide" : "Review \(pendings.count)") { expanded.toggle() }
+                        .buttonStyle(.bordered)
+                        .frame(minWidth: 72)
+                        .contentShape(Rectangle())
+                }
+                .controlSize(.small)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+                .background(Color.yellow.opacity(0.1))
+                .overlay(alignment: .bottom) { Divider() }
+                .zIndex(1)
+                if expanded {
+                    ForEach(pendings) { PendingCaptureBanner(pending: $0, app: app) }
+                }
+            }
+        }
+    }
+}
+
 struct PendingCaptureBanner: View {
     let pending: PendingCapture
     let app: AppModel
@@ -421,12 +457,20 @@ struct FooterView: View {
                     .onTapGesture { app.dismissNotice() }
             } else {
                 HStack(spacing: 12) {
-                    hint("↩", "Paste")
-                    hint("⇧↩", "Plain text")
-                    hint("⌥↩", "Copy")
-                    hint("Space", "Preview")
+                    if model.sidebar == .history, model.searchText.isEmpty, let newest = model.results.first?.id, model.selectedID != newest {
+                        Button { model.selectFirst() } label: { hint("⌘↑", "Latest") }
+                            .buttonStyle(.plain)
+                            .help("Jump to the newest clip")
+                            .accessibilityLabel("Jump to the newest clip")
+                    }
+                    HStack(spacing: 12) {
+                        hint("↩", "Paste")
+                        hint("⇧↩", "Plain text")
+                        hint("⌥↩", "Copy")
+                        hint("Space", "Preview")
+                    }
+                    .accessibilityHidden(true)
                 }
-                .accessibilityHidden(true)
             }
             Button(action: onOpenSettings) { Image(systemName: "gearshape") }
                 .buttonStyle(.plain)

@@ -14,7 +14,7 @@ struct ShelfView: View {
     var body: some View {
         VStack(spacing: 0) {
             topBar
-            ForEach(app.pendingCaptures) { PendingCaptureBanner(pending: $0, app: app) }
+            PendingCaptureStack(pendings: app.pendingCaptures, app: app)
             HStack(spacing: 0) {
                 if app.preferences.showSidebar {
                     SidebarView(model: model, app: app)
@@ -86,6 +86,19 @@ struct ShelfView: View {
                 .padding(.bottom, -8) // FilterBar carries bottom padding for the list layout
 
             Text(countText).font(.system(size: 11).monospacedDigit()).foregroundStyle(.secondary).fixedSize()
+            if model.sidebar == .history, model.searchText.isEmpty, let newest = model.results.first?.id, model.selectedID != newest {
+                Button { model.selectFirst() } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "arrow.left.to.line").font(.system(size: 10, weight: .semibold))
+                        Text("Latest")
+                    }
+                    .font(.system(size: 11))
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(.secondary)
+                .help("Jump to the newest clip (⌘←)")
+                .accessibilityLabel("Jump to the newest clip")
+            }
             Button(action: onOpenSettings) { Image(systemName: "gearshape") }
                 .buttonStyle(.plain).foregroundStyle(.secondary)
                 .help("Settings (⌘,)").accessibilityLabel("Settings")

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.4 Beta — 2026-10-05
+
+- Jump to the newest clip: a "Latest" button appears in the panel once you've scrolled away from the top (also ⌘↑ in the list, ⌘← in the shelf — these shortcuts already existed but weren't shown anywhere)
+- Sensitive-content review banners no longer pile up: 2+ at once collapse into "N items awaiting review" with Discard All and a Review/Hide toggle
+- Bigger, steadier buttons on that banner so clicks land reliably
+
 ## 0.9.3 Beta — 2026-09-29
 
 - Click selects a clip, and double-click pastes it into the app you were using (it also becomes your latest clipboard item). Single-click paste is still available in Settings › Clipboard.
