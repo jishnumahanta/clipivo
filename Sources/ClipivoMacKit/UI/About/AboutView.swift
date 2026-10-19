@@ -35,8 +35,13 @@ struct AboutView: View {
             HStack(spacing: 16) {
                 Link("Website", destination: Branding.developerWebsite)
                 if let mail = URL(string: "mailto:\(Branding.supportEmail)?subject=\(Branding.productName)%20support") {
-                    Link("Support", destination: mail).help(Branding.supportEmail)
+                    Link("Contact", destination: mail).help(Branding.supportEmail)
                 }
+                Button { NSApp.sendAction(#selector(AppDelegate.showSupportFromMenu(_:)), to: nil, from: nil) } label: {
+                    Label("Support", systemImage: "heart.fill").labelStyle(.titleAndIcon)
+                }
+                .buttonStyle(.link)
+                .help("Ways to support the developer")
             }
             .font(.callout).padding(.top, 14)
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- "♥ Support Clipivo": a quiet link at the bottom of the sidebar (also in the menu bar menu and About) opens a window with ways to support the developer: UPI (with QR), Wise, GitHub Sponsors, and free ways to help. Paying unlocks nothing; links open in your browser and the app makes no network requests for it.
+
 ## 0.9.5 Beta — 2026-10-06
 
 - Import history from another clipboard manager: Settings ▸ Storage ▸ "Import from another app" — paste its history list, or import a file it exported. No extra permission needed; each item is classified the same as a fresh copy, so you can switch over and remove the old app.

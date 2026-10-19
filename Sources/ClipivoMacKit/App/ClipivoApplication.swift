@@ -21,6 +21,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: StatusItemController?
     private var settingsWindow: HostedWindowController<SettingsView>?
     private var aboutWindow: HostedWindowController<AboutView>?
+    private var supportWindow: HostedWindowController<SupportView>?
     private var welcomeWindow: HostedWindowController<WelcomeView>?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -50,6 +51,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         status.showPanel = { [weak self] sidebar in self?.panel?.show(selecting: sidebar) }
         status.openSettings = { [weak self] in self?.showSettings() }
         status.openAbout = { [weak self] in self?.showAbout(nil) }
+        status.openSupport = { [weak self] in self?.showSupport() }
+        model.onOpenSupport = { [weak self] in self?.panel?.hide(); self?.showSupport() }
 
         model.onPanelRequest = { [weak self] request in
             guard let panel = self?.panel else { return }
@@ -99,6 +102,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         aboutWindow?.show()
     }
 
+    /// Responder-chain entry for the About window's Support link and the app menu.
+    @objc func showSupportFromMenu(_ sender: Any?) { showSupport() }
+
+    private func showSupport() {
+        if supportWindow == nil {
+            supportWindow = HostedWindowController(title: "Support \(Branding.productName)", size: NSSize(width: 580, height: 400)) {
+                SupportView()
+            }
+        }
+        supportWindow?.show()
+    }
+
     private func showWelcome() {
         guard let app else { return }
         welcomeWindow = HostedWindowController(title: "Welcome", size: NSSize(width: 520, height: 520), resizable: false) { [weak self] in
@@ -117,6 +132,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let appItem = NSMenuItem()
         let appMenu = NSMenu()
         appMenu.addItem(withTitle: "About \(Branding.productName)", action: #selector(showAbout(_:)), keyEquivalent: "").target = self
+        appMenu.addItem(withTitle: "Support \(Branding.productName)…", action: #selector(showSupportFromMenu(_:)), keyEquivalent: "").target = self
         appMenu.addItem(.separator())
         appMenu.addItem(withTitle: "Hide \(Branding.productName)", action: #selector(NSApplication.hide(_:)), keyEquivalent: "h")
         appMenu.addItem(withTitle: "Quit \(Branding.productName)", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
