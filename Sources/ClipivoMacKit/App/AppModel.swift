@@ -44,6 +44,8 @@ public final class AppModel {
     @ObservationIgnored private var deliveryInProgress = false
     @ObservationIgnored var onPanelRequest: ((PanelRequest) -> Void)?
     @ObservationIgnored var onStateChange: (() -> Void)?
+    /// Opens the "Support Clipivo" window (set by the app delegate).
+    @ObservationIgnored var onOpenSupport: (() -> Void)?
 
     public enum PanelRequest { case toggle, show, hide, showSpace(Int64?), showPinned }
 

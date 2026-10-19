@@ -112,6 +112,21 @@ This needs Xcode 16 or later. [CONTRIBUTING.md](CONTRIBUTING.md) covers tests, b
 
 Clipivo is in **beta**: usable every day, still being hardened. Planned next are Developer ID signing and automatic updates, then versions for Windows, iOS and Android, and opt-in end-to-end encrypted sync. None of those exist yet; see [ROADMAP.md](ROADMAP.md).
 
+## Support
+
+Clipivo is free, with no limits, and built by one developer. Paying unlocks nothing; every feature is already free. If it helped you, a small thank-you keeps it going.
+
+| Method | Details |
+| --- | --- |
+| **UPI (India)** | `jishnumahanta17@oksbi` · scan the QR below with Google Pay, PhonePe, Paytm or any UPI app |
+| **Wise (anywhere)** | Card or bank transfer in any currency: [wise.com/pay/business/jishnumahanta](https://wise.com/pay/business/jishnumahanta) |
+| **GitHub Sponsors** | Monthly or one-time: [github.com/sponsors/jishnumahanta](https://github.com/sponsors/jishnumahanta) |
+| **Free ways to help** | Star the repo, tell a friend, or [report a bug](https://github.com/jishnumahanta/clipivo/issues) |
+
+<img src="assets/upi-qr.svg" width="168" alt="UPI QR code to pay Jishnu Mahanta">
+
+In the app: **♥ Support Clipivo** at the bottom of the sidebar, or in the menu bar menu.
+
 ## License
 
 © 2026 Jishnu Mahanta. All rights reserved.

@@ -11,6 +11,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     var showPanel: ((SidebarSelection?) -> Void)?
     var openSettings: (() -> Void)?
     var openAbout: (() -> Void)?
+    var openSupport: (() -> Void)?
 
     init(app: AppModel) {
         self.app = app
@@ -120,6 +121,9 @@ final class StatusItemController: NSObject, NSMenuDelegate {
         menu.addItem(item("Settings…", #selector(settings), key: ","))
         menu.addItem(item("Check for Updates…", #selector(checkForUpdates)))
         menu.addItem(item("About \(Branding.productName)", #selector(about)))
+        let support = item("Support \(Branding.productName)…", #selector(supportDeveloper))
+        support.image = NSImage(systemSymbolName: "heart", accessibilityDescription: nil)
+        menu.addItem(support)
         menu.addItem(.separator())
         menu.addItem(item("Quit \(Branding.productName)", #selector(quit), key: "q"))
     }
@@ -138,6 +142,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     @objc private func openSpace(_ sender: NSMenuItem) { showPanel?(.space(Int64(sender.tag))) }
     @objc private func settings() { openSettings?() }
     @objc private func about() { openAbout?() }
+    @objc private func supportDeveloper() { openSupport?() }
     @objc private func quit() { NSApp.terminate(nil) }
 
     @objc private func togglePause() {

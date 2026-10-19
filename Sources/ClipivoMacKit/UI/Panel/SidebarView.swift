@@ -56,10 +56,27 @@ struct SidebarView: View {
                 .padding(.top, 12)
             }
             Spacer(minLength: 0)
+            supportRow
         }
         .background(VisualEffectBackground(material: .sidebar, blending: .withinWindow).opacity(0.6))
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Spaces")
+    }
+
+    /// A quiet "♥ Support Clipivo" link pinned to the bottom of the sidebar.
+    private var supportRow: some View {
+        Button { app.onOpenSupport?() } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "heart.fill").font(.system(size: 10)).foregroundStyle(SupportHeart.color)
+                Text("Support \(Branding.productName)").font(.system(size: 11.5)).foregroundStyle(.secondary)
+            }
+            .padding(.horizontal, 18)
+            .frame(maxWidth: .infinity, minHeight: 30, alignment: .leading)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .help("Ways to support the developer. Paying unlocks nothing.")
+        .accessibilityLabel("Support \(Branding.productName)")
     }
 
     private func row(_ selection: SidebarSelection, title: String, icon: String, count: Int?, pinned: Bool = false) -> some View {
